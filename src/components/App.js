@@ -1,7 +1,10 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-// import {BrowserRouter, Route, Routes, Navigate, useNavigate} from 'react-router-dom';
-import ImagePopup from "./ImagePopup";
+import { Route, Routes } from 'react-router-dom';
+import ProtectedRouteElement from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
+import ImagePopup from './ImagePopup';
 import '../index.css';
 import Header from './Header.js';
 import EditProfilePopup from './EditProfilePopup';
@@ -37,6 +40,7 @@ function App() {
         React.useState(false);
     const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState({});
+    let loggedIn = false;
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -136,6 +140,23 @@ function App() {
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
                 <Header />
+                <Routes>
+                    <Route path="/sign-up" element={<Register title="Регистрация" name="register"/>} />
+                    <Route path="/sign-in" element={<Login title="Вход" name="login"/>} />
+                    <Route path="/" element={
+                        <ProtectedRouteElement
+                            component={Main}
+                            loggedIn={loggedIn}
+                            cards={cards}
+                            onEditProfile={handleEditProfileClick}
+                            onAddPlace={handleAddPlaceClick}
+                            onEditAvatar={handleEditAvatarClick}
+                            onCardClick={handleCardClick}
+                            onCardLike={handleCardLike}
+                            onDeleteClick={handleCardDelete} />
+                    } />
+                </Routes>
+
                 <Main
                     cards={cards}
                     onEditProfile={handleEditProfileClick}
@@ -145,12 +166,14 @@ function App() {
                     onCardLike={handleCardLike}
                     onDeleteClick={handleCardDelete}
                 />
+
                 <Footer />
 
                 <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}
                     onClose={closeAllPopups}
                     onUpdateUser={handleUpdateUser}
+                    onOverlayClick={handlePopupOverlayClick}
                 />
 
                 <AddPlacePopup

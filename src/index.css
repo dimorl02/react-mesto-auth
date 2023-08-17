@@ -49,6 +49,17 @@
 
 @import url(./blocks/cards/__like-button/_active/cards__like-button_active.css);
 
+/*блок login*/
+@import url(./blocks/login/login.css);
+
+@import url(./blocks/login/__container/login__container.css);
+@import url(./blocks/login/__title/login__title.css);
+@import url(./blocks/login/__set/login__set.css);
+@import url(./blocks/login/__text/login__text.css);
+@import url(./blocks/login/__error-container/login__error-container.css);
+@import url(./blocks/login/__save-button/login__save-button.css);
+
+
 /*блок popup*/
 @import url(./blocks/popup/popup.css);
 
@@ -67,9 +78,6 @@
 
 @import url(./blocks/popup/_type/popup_type_image.css);
 
-@import url(./blocks/popup/__text/_type/popup__text_type_name.css);
-@import url(./blocks/popup/__text/_type/popup__text_type_brief.css);
-@import url(./blocks/popup/__text/_type/popup__text_type_error.css);
 @import url(./blocks/popup/__text-error/_active/popup__text-error_active.css);
 @import url(./blocks/popup/__save-button/_disabled/popup__save-button_disabled.css);
 
