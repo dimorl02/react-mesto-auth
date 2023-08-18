@@ -1,9 +1,31 @@
-function Register({ name, title }) {
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+function Register({ name, title, handleRegister }) {
+    const [formValue, setFormValue] = useState({
+        email: '',
+        password: '',
+    })
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        setFormValue({
+            ...formValue,
+            [name]: value
+        });
+    }
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        handleRegister(formValue)
+    }
+
     return (
         <section className="login" >
             <div className="login__container">
                 <h2 className="login__title" >{title}</h2>
-                <form className={`login__form popup__form_type_${name}`} name={name}>
+                <form className={`login__form popup__form_type_${name}`} name={name} onSubmit={handleSubmit}>
                     <fieldset className="login__set">
                         <div className="login__error-container">
                             <input
@@ -15,6 +37,7 @@ function Register({ name, title }) {
                                 maxLength="40"
                                 required
                                 autoComplete="off"
+                                onChange={handleChange}
                             />
                         </div>
                         <div className="login__error-container">
@@ -27,6 +50,7 @@ function Register({ name, title }) {
                                 maxLength="200"
                                 required
                                 autoComplete="off"
+                                onChange={handleChange}
                             />
                         </div>
                         <button className="login__save-button">Зарегистрироваться</button>

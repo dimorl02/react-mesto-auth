@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import ProtectedRouteElement from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
@@ -14,6 +14,8 @@ import Main from './Main.js'
 import Footer from './Footer.js'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api';
+import * as auth from '../utils/auth';
+
 function App() {
     const [currentUser, setCurrentUser] = useState({
         "name": '',
@@ -22,6 +24,7 @@ function App() {
         "_id": '',
         "cohort": ''
     });
+    const [loggedIn, setLoggedIn] = useState(false);
     const [cards, setCards] = useState([]);
     useEffect(() => {
         Promise.all([api.getUserInfoApi(), api.getInitialCards()])
@@ -40,8 +43,7 @@ function App() {
         React.useState(false);
     const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState({});
-    let loggedIn = false;
-
+    const navigate = useNavigate();
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
     }
@@ -134,15 +136,39 @@ function App() {
                 alert(`Ошибка добавления карточки:\n ${err.status}\n ${err.text}`);
             })
     }
-
+    
+    function handleLogin(data) {
+        const {emailUser, password} = data;
+        auth.authorizeUser(emailUser, password)
+          .then((res)=>{
+            localStorage.setItem("jwt", res.token);
+            setLoggedIn(true);
+            navigate('/', {replace: true})
+            setUserEmail(emailUser)
+          })
+          .catch((err) => {
+            alert(`Ошибка авторизации пользователя\n ${err.status}\n ${err.text}`);
+          })
+      }
+    
+      function handleRegister(data){
+        const {emailUser, password} = data
+        auth.registerUser(emailUser, password)
+          .then(()=>{
+            navigate('/sign-in', {replace: true})
+          })
+          .catch((err) => {
+            alert(`Ошибка регистрации пользователя\n ${err.status}\n ${err.text}`);
+          })
+      }
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
                 <Header />
                 <Routes>
-                    <Route path="/sign-up" element={<Register title="Регистрация" name="register"/>} />
-                    <Route path="/sign-in" element={<Login title="Вход" name="login"/>} />
+                    <Route path="/sign-up" element={<Register title="Регистрация" name="register" handleRegister={handleRegister}/>} />
+                    <Route path="/sign-in" element={<Login title="Вход" name="login" handleLogin={handleLogin} />} />
                     <Route path="/" element={
                         <ProtectedRouteElement
                             component={Main}
@@ -156,16 +182,6 @@ function App() {
                             onDeleteClick={handleCardDelete} />
                     } />
                 </Routes>
-
-                <Main
-                    cards={cards}
-                    onEditProfile={handleEditProfileClick}
-                    onAddPlace={handleAddPlaceClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onCardClick={handleCardClick}
-                    onCardLike={handleCardLike}
-                    onDeleteClick={handleCardDelete}
-                />
 
                 <Footer />
 
