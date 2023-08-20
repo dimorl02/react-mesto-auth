@@ -20,18 +20,9 @@ function Login({ name, title, handleLogin}) {
       
       const handleSubmit = (evt) => {
         evt.preventDefault();
-        if (!formValue.email || !formValue.password){
-          return;
-        }
-        auth.authorizeUser(formValue.email, formValue.password)
-          .then((data) => {
-            if (data.jwt){
-              setFormValue({email: '', password: ''});
-              handleLogin();
-              navigate('/', {replace: true});
-            }
-          })
-          .catch(err => console.log(err));
+        setFormValue({email: '', password: ''});
+        handleLogin();
+        navigate('/', {replace: true});
       }
 
 

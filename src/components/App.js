@@ -25,6 +25,7 @@ function App() {
         "cohort": ''
     });
     const [loggedIn, setLoggedIn] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
     const [cards, setCards] = useState([]);
     useEffect(() => {
         Promise.all([api.getUserInfoApi(), api.getInitialCards()])
@@ -43,6 +44,7 @@ function App() {
         React.useState(false);
     const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState({});
+
     const navigate = useNavigate();
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -138,8 +140,7 @@ function App() {
     }
     
     function handleLogin(data) {
-        const {emailUser, password} = data;
-        auth.authorizeUser(emailUser, password)
+        auth.authorizeUser(data.email, data.password)
           .then((res)=>{
             localStorage.setItem("jwt", res.token);
             setLoggedIn(true);
@@ -152,9 +153,9 @@ function App() {
       }
     
       function handleRegister(data){
-        const {emailUser, password} = data
-        auth.registerUser(emailUser, password)
-          .then(()=>{
+        auth.registerUser(data.email, data.password)
+          .then((res)=>{
+            console.log(res)
             navigate('/sign-in', {replace: true})
           })
           .catch((err) => {
@@ -162,10 +163,17 @@ function App() {
           })
       }
 
+      function logOut() {
+        localStorage.removeItem('jwt');
+        navigate('/sign-in');
+        setLoggedIn(false);
+        setUserEmail('');
+      }
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
-                <Header />
+                <Header logOut={logOut} userEmail={userEmail} />
                 <Routes>
                     <Route path="/sign-up" element={<Register title="Регистрация" name="register" handleRegister={handleRegister}/>} />
                     <Route path="/sign-in" element={<Login title="Вход" name="login" handleLogin={handleLogin} />} />
@@ -183,7 +191,7 @@ function App() {
                     } />
                 </Routes>
 
-                <Footer />
+                {/* <Footer /> */}
 
                 <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}

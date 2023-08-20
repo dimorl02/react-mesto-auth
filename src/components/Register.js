@@ -7,8 +7,8 @@ function Register({ name, title, handleRegister }) {
         password: '',
     })
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (evt) => {
+        const { name, value } = evt.target;
 
         setFormValue({
             ...formValue,
@@ -19,6 +19,7 @@ function Register({ name, title, handleRegister }) {
     const handleSubmit = (evt) => {
         evt.preventDefault();
         handleRegister(formValue)
+        console.log(formValue)
     }
 
     return (
@@ -30,7 +31,7 @@ function Register({ name, title, handleRegister }) {
                         <div className="login__error-container">
                             <input
                                 className="login__text"
-                                name="register-email"
+                                name="email"
                                 id="register-email"
                                 type="text" placeholder="Email"
                                 minLength="2"
@@ -43,7 +44,7 @@ function Register({ name, title, handleRegister }) {
                         <div className="login__error-container">
                             <input
                                 className="login__text"
-                                name="register-password"
+                                name="password"
                                 id="register-password"
                                 type="password" placeholder="Password"
                                 minLength="2"

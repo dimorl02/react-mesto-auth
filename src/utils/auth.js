@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.nomoreparties.co';
+export const BASE_URL = 'https://auth.nomoreparties.co/';
 
 function checkResponseValidity(res) {
     if (res.ok) {
@@ -16,6 +16,7 @@ export function registerUser(email, password) {
       },
       body: JSON.stringify({ email, password })
     })
+    .then(console.log(email, password))
       .then(res => checkResponseValidity(res));
   };
   
