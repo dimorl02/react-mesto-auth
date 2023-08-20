@@ -1,13 +1,10 @@
-import * as auth from '../utils/auth';
 import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
 
 function Login({ name, title, handleLogin}) {
     const [formValue, setFormValue] = useState({
         email: '',
         password: ''
       })
-      const navigate = useNavigate();
     
       const handleChange = (e) => {
         const {name, value} = e.target;
@@ -21,8 +18,7 @@ function Login({ name, title, handleLogin}) {
       const handleSubmit = (evt) => {
         evt.preventDefault();
         setFormValue({email: '', password: ''});
-        handleLogin();
-        navigate('/', {replace: true});
+        handleLogin(formValue);
       }
 
 
