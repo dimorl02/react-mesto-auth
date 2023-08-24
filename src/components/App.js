@@ -12,7 +12,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import InfoTooltip from './InfoTooltip';
 import Main from './Main.js'
-import Footer from './Footer.js'
+
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/Api';
 import * as auth from '../utils/auth';
@@ -172,7 +172,7 @@ function App() {
             localStorage.setItem("jwt", res.token);
             setLoggedIn(true);
             navigate('/', {replace: true})
-            setUserEmail(emailUser)
+            setUserEmail(data.email)
             setIsInfoTooltipOpen(true);
           })
           .catch(() => {
@@ -218,7 +218,7 @@ function App() {
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
-                <Header logOut={logOut} userEmail={userEmail} />
+                <Header signOut={logOut} userEmail={userEmail} />
                 <Routes>
                     <Route path="/sign-up" element={<Register title="Регистрация" name="register" handleRegister={handleRegister}/>} />
                     <Route path="/sign-in" element={<Login title="Вход" name="login" handleLogin={handleLogin} />} />
@@ -234,9 +234,8 @@ function App() {
                             onCardLike={handleCardLike}
                             onDeleteClick={handleCardDelete} />
                     } />
+                    
                 </Routes>
-
-                {/* <Footer /> */}
 
                 <EditProfilePopup
                     isOpen={isEditProfilePopupOpen}

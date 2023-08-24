@@ -8,3 +8,9 @@
     line-height: 22px;
 }
 
+@media screen and (max-width: 500px) {
+    .header__user-email {
+        font-size: 14px;
+        margin: 6px auto 0;
+    }
+}
