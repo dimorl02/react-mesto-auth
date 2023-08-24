@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 function Register({ name, title, handleRegister }) {
     const [formValue, setFormValue] = useState({
         email: '',
@@ -57,6 +56,9 @@ function Register({ name, title, handleRegister }) {
                         <button className="login__save-button">Зарегистрироваться</button>
                     </fieldset>
                 </form>
+                <Link to="/sign-in" className="login__link">
+                    Уже зарегистрированы? Войти
+                </Link>
             </div>
         </section>
     );

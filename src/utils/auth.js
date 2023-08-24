@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co/';
+export const BASE_URL = 'https://auth.nomoreparties.co';
 
 function checkResponseValidity(res) {
     if (res.ok) {
@@ -12,6 +12,7 @@ export function registerUser(email, password) {
     return fetch(`${BASE_URL}/signup`, {
       method: 'POST',
       headers: {
+        "Accept": "application/json",
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ email, password })
@@ -24,6 +25,7 @@ export function registerUser(email, password) {
     return fetch(`${BASE_URL}/signin`, {
       method: 'POST',
       headers: {
+        "Accept": "application/json",
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ email, password })

@@ -15,6 +15,9 @@
 
 @import url(./blocks/header/__logo/header__logo.css);
 @import url(./blocks/header/__link/header__link.css);
+@import url(./blocks/header/__logout/header__logout.css);
+@import url(./blocks/header/__user-info/header__user-info.css);
+@import url(./blocks/header/__user-email/header__user-email.css);
 
 
 /*блок content*/
@@ -55,6 +58,7 @@
 
 @import url(./blocks/login/__container/login__container.css);
 @import url(./blocks/login/__title/login__title.css);
+@import url(./blocks/login/__link/login__link.css);
 @import url(./blocks/login/__set/login__set.css);
 @import url(./blocks/login/__text/login__text.css);
 @import url(./blocks/login/__error-container/login__error-container.css);
@@ -66,7 +70,9 @@
 
 @import url(./blocks/popup/__container/popup__container.css);
 @import url(./blocks/popup/__title/popup__title.css);
+@import url(./blocks/popup/__title/_info/popup__title_info.css);
 @import url(./blocks/popup/__image/popup__image.css);
+@import url(./blocks/popup/__info-image/popup__info-image.css);
 @import url(./blocks/popup/__close-button/popup__close-button.css);
 @import url(./blocks/popup/__text/popup__text.css);
 @import url(./blocks/popup/__text-error/popup__text-error.css);
@@ -76,6 +82,7 @@
 @import url(./blocks/popup/__set/popup__set.css);
 @import url(./blocks/popup/__error-container/popup__error-container.css);
 @import url(./blocks/popup/_opened/popup_opened.css);
+
 
 @import url(./blocks/popup/_type/popup_type_image.css);
 

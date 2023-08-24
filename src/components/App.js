@@ -10,6 +10,7 @@ import Header from './Header.js';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import InfoTooltip from './InfoTooltip';
 import Main from './Main.js'
 import Footer from './Footer.js'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -25,6 +26,10 @@ function App() {
         "cohort": ''
     });
     const [loggedIn, setLoggedIn] = useState(false);
+    const [message, setMessage] = useState({
+        status: false,
+        text: "",
+      })
     const [userEmail, setUserEmail] = useState("");
     const [cards, setCards] = useState([]);
     useEffect(() => {
@@ -43,7 +48,9 @@ function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
         React.useState(false);
     const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
+    const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
     const [selectedCard, setSelectedCard] = React.useState({});
+    
 
     const navigate = useNavigate();
     function handleEditAvatarClick() {
@@ -69,6 +76,7 @@ function App() {
         setIsAddPlacePopupOpen(false);
         setImagePopupOpen(false);
         setSelectedCard({});
+        setIsInfoTooltipOpen(false)
     }
 
     function handlePopupOverlayClick(evt) {
@@ -138,28 +146,61 @@ function App() {
                 alert(`Ошибка добавления карточки:\n ${err.status}\n ${err.text}`);
             })
     }
-    
+
+    function tokenCheck(){
+        const jwt = localStorage.getItem('jwt');
+        if(jwt){
+          auth.getContent(jwt)
+            .then((res) => {
+              setLoggedIn(true);
+              setUserEmail(res.data.email);
+              navigate("/", {replace: true});
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+        }
+    }
     function handleLogin(data) {
+        console.log("login data:", data)
         auth.authorizeUser(data.email, data.password)
           .then((res)=>{
+            setMessage({
+                status: true,
+                text: "Вы успешно авторизовались!",
+              });
             localStorage.setItem("jwt", res.token);
             setLoggedIn(true);
             navigate('/', {replace: true})
             setUserEmail(emailUser)
+            setIsInfoTooltipOpen(true);
           })
-          .catch((err) => {
-            alert(`Ошибка авторизации пользователя\n ${err.status}\n ${err.text}`);
+          .catch(() => {
+            setMessage({
+                status: false,
+                text: "Что-то пошло не так! Попробуйте ещё раз.",
+              });
+              setIsInfoTooltipOpen(true)
           })
       }
     
       function handleRegister(data){
         auth.registerUser(data.email, data.password)
-          .then((res)=>{
-            console.log(res)
+          .then(()=>{
+            
+            setMessage({
+                status: true,
+                text: "Вы успешно зарегистрировались!",
+              });
             navigate('/sign-in', {replace: true})
+            setIsInfoTooltipOpen(true)
           })
-          .catch((err) => {
-            alert(`Ошибка регистрации пользователя\n ${err.status}\n ${err.text}`);
+          .catch(() => {
+            setMessage({
+              status: false,
+              text: "Что-то пошло не так! Попробуйте ещё раз.",
+            });
+            setIsInfoTooltipOpen(true)
           })
       }
 
@@ -169,6 +210,10 @@ function App() {
         setLoggedIn(false);
         setUserEmail('');
       }
+
+      useEffect(()=>{
+        tokenCheck();
+      }, [])
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
@@ -220,6 +265,7 @@ function App() {
                     onUpdateAvatar={handleUpdateAvatar}
                     onOverlayClick={handlePopupOverlayClick}
                 />
+                <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} message={message}/>
             </div>
         </CurrentUserContext.Provider>
     );
