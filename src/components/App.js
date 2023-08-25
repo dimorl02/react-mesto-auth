@@ -1,11 +1,10 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import ProtectedRouteElement from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
 import ImagePopup from './ImagePopup';
-import '../index.css';
 import Header from './Header.js';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -234,6 +233,7 @@ function App() {
                             onCardLike={handleCardLike}
                             onDeleteClick={handleCardDelete} />
                     } />
+                    <Route path="*" element={<Navigate to="/sign-in" replace />} />
                     
                 </Routes>
 

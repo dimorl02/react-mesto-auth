@@ -31,6 +31,7 @@ function AddPlacePopup({ isOpen, onAddPlace, ...commonProps }) {
             isOpen={isOpen}
             onSubmit={handleAddPlaceSubmit}
             {...commonProps}
+
         >
             <div className="popup__error-container">
                 <input
@@ -54,6 +55,9 @@ function AddPlacePopup({ isOpen, onAddPlace, ...commonProps }) {
                     type="url"
                     placeholder="Ссылка на картинку"
                     value={link}
+                    minLength="2"
+                    maxLength="200"
+                    required
                     onInput={handleChangeLink}
                 />
             </div>
